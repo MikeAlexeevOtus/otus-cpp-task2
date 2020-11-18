@@ -1,3 +1,5 @@
+#include "allocator.h"
+
 #include <map>
 #include <iostream>
 
@@ -15,7 +17,7 @@ int factorial(int n)
 
 int main()
 {
-    using allocator = std::allocator<std::pair<int, int>>;
+    using allocator = reserved_allocator<std::pair<int, int>>;
     std::map<int, int, std::less<int>, allocator> test_map;
 
     for (int i=0; i<10; i++)
