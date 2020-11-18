@@ -56,4 +56,16 @@ int main()
     {
         std::cout << stack_std_alloc[i] << std::endl;
     }
+
+    stack<int, reserved_allocator<32>::allocator<int>> stack_custom_alloc;
+    for (int i=0; i<10; i++)
+    {
+        stack_custom_alloc.push(i);
+    }
+
+    std::cout << "stack with custom allocator:" << std::endl;
+    for (int i=0; i<10; i++)
+    {
+        std::cout << stack_custom_alloc[i] << std::endl;
+    }
 }

@@ -46,7 +46,7 @@ struct reserved_allocator
             if (m_currentOffset + n  > items_count)
                 throw std::bad_alloc();
 
-            auto p = m_memBlock + m_currentOffset * sizeof(T);
+            auto p = m_memBlock + m_currentOffset;
             m_currentOffset += n;
             return p;
         }
