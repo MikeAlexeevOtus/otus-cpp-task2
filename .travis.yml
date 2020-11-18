@@ -1,0 +1,16 @@
+language: cpp
+script:
+  - cmake .
+  - cmake --build .
+  - cmake --build . --target package
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - >
+    ./deploy.sh
+    task2
+    alloc
+    $TRAVIS_BUILD_NUMBER
+    $BINTRAY_API_KEY
