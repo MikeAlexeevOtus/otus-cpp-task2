@@ -9,12 +9,18 @@ struct stack
     {
     }
 
+    ~stack()
+    {
+        if (m_capacity)
+            m_allocator.deallocate(m_storage, m_capacity);
+    }
+
     void push(const T item)
     {
         if (!m_capacity)
             resize(1);
 
-        else if (m_size == m_capacity)
+        if (m_size == m_capacity)
             resize(m_capacity * 2);
 
         m_storage[m_size] = item;
