@@ -7,6 +7,14 @@ endif()
 
 project(alloc VERSION 0.0.${TRAVIS_BUILD_NUMBER})
 
+if (MSVC)
+    set(COMPILE_OPTS /W4)
+else ()
+    set(COMPILE_OPTS -Wall -Wextra -pedantic -Werror)
+endif()
+
+add_executable(alloc src/main.cpp)
+
 set(timus_executables)
 foreach(task_number
         1264
@@ -20,7 +28,7 @@ foreach(task_number
     list(APPEND timus_executables timus_${task_number})
 endforeach(task_number)
 
-set_target_properties(${timus_executables} PROPERTIES
+set_target_properties(alloc ${timus_executables} PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
