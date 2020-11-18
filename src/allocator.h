@@ -53,6 +53,8 @@ struct reserved_allocator
 
         void deallocate(T *p, std::size_t n)
         {
+            (void) *p;
+            (void) n;
         }
 
         template<typename U, typename ...Args>
