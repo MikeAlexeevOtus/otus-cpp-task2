@@ -23,23 +23,36 @@ struct reserved_allocator
             using other = allocator<U>;
         };
 
-        allocator() = default;
-        ~allocator() = default;
+        allocator()
+        {
+            auto p = std::malloc(items_count * sizeof(T));
+            if (!p)
+                throw std::bad_alloc();
+
+            m_memBlock = reinterpret_cast<T *>(p);
+            m_currentOffset = 0;
+        }
+
+        ~allocator()
+        {
+            std::free(m_memBlock);
+        }
 
         template<typename U>
         allocator(const allocator<U>&) {}
 
         T *allocate(std::size_t n)
         {
-            auto p = std::malloc(n * sizeof(T));
-            if (!p)
+            if (m_currentOffset + n  > items_count)
                 throw std::bad_alloc();
-            return reinterpret_cast<T *>(p);
+
+            auto p = m_memBlock + m_currentOffset * sizeof(T);
+            m_currentOffset += n;
+            return p;
         }
 
         void deallocate(T *p, std::size_t n)
         {
-            std::free(p);
         }
 
         template<typename U, typename ...Args>
@@ -53,5 +66,9 @@ struct reserved_allocator
         {
             p->~U();
         }
+
+    private:
+        T* m_memBlock;
+        int m_currentOffset;
     };
 };
