@@ -17,16 +17,29 @@ int factorial(int n)
 
 int main()
 {
-    using allocator = reserved_allocator<10>::allocator<std::pair<int, int>>;
-    std::map<int, int, std::less<int>, allocator> test_map;
+    std::map<int, int> map_std_alloc;
 
     for (int i=0; i<10; i++)
     {
-        test_map.insert(std::pair<int, int>(i, factorial(i)));
+        map_std_alloc.insert(std::pair<int, int>(i, factorial(i)));
+    }
+
+    std::cout << "map with std allocator:" << std::endl;
+    for (const auto &pair: map_std_alloc)
+    {
+        std::cout << pair.first << " " << pair.second << std::endl;
+    }
+
+    using allocator = reserved_allocator<10>::allocator<std::pair<int, int>>;
+    std::map<int, int, std::less<int>, allocator> map_custom_alloc;
+
+    for (int i=0; i<10; i++)
+    {
+        map_custom_alloc.insert(std::pair<int, int>(i, factorial(i)));
     }
 
     std::cout << "map with custom allocator:" << std::endl;
-    for (const auto &pair: test_map)
+    for (const auto &pair: map_custom_alloc)
     {
         std::cout << pair.first << " " << pair.second << std::endl;
     }
